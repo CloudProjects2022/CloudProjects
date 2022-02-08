@@ -1,0 +1,37 @@
+#PersistentVolume definitions for Visa RTSI simulator.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: adjhub-local-pv
+  namespace: default
+spec:
+  capacity:
+    storage: 500Mi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: lean-class
+  local:
+    path: /mnt/adjhub-cluster-storage
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - localhost
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: adjhub-local-pvc
+  namespace: default
+spec:
+  storageClassName: lean-class
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 500Mi

@@ -1,0 +1,435 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ahs-config
+data:
+  NetworkHub.properties: |-
+    #
+    # General properties
+    #
+    PropertyVersion=1.1
+    DocumentStore=com.lean.core.filestore.FileSystemDocumentStore
+
+    #
+    # Networks
+    #
+    #Visa - 21.2
+    Visa(21.2).Factory=com.lean.visa212.Visa212Factory
+    Visa(21.2).ActivationDate=20210802
+    Visa(21.2).Descriptor=VisaDescriptor212.xml
+
+    #Adjhub Client
+    AdjHub.PropertyAccessor=com.lean.pulse.properties.PulsePropertyFileAccessor
+    Genti.PropertyFile=NHClient.Genti.properties
+
+  AdjHub.properties: |-
+    #;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    #; Lean AdjustmentHub Configuration File
+    #;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    #; LeanGeneric - AdjustmentHub v 4.2x Ver LeanDevPulse
+    #;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+    # Application Database Access Details -- Blank UID and PWD indicates Windows Auth.
+    CMSUID=adjhub
+    CMSPWD=SecurePa55
+
+    #To speed up the startup process
+    LCMSdb.Schema=ADJHUB
+
+    # For CyberArk testing only: Only to be used at PULSE
+    #PasswordVault.ClassName=com.lean.core.passwordvault.CyberArk
+    #PasswordVault.AppID=CyberArkAppID
+    #CMSUID=PasswordVault.Username.Database
+    #CMSPWD=PasswordVault.Password.Database
+
+
+    # Documents and Data Directories
+    DocumentStore=com.lean.pulse.documentstore.PulseDocumentStore
+    DocsPath=/AdjHubData/Docs/
+    FormTemplatesPath=/AdjHubData/Templates/
+    ReportTemplatePath=/AdjHubData/Templates/Reports/
+    ReportImagePath=/AdjHubData/Templates/Reports/Images/
+    DatabaseSchema.OutputPath=/AdjHubData/Schema/
+
+    #Mail Configuration (Alert eMails)
+    smtphost=smtp.emailsrvr.com
+    smtpuser=test2@leanindustries.com
+    smtppwd=Vakker05#@rose
+    smtpport=25
+    smtpfrom=test2@leanindustries.com
+
+    ### Authentication ###
+    Authenticator=com.lean.pulse.authentication.PulseAuthenticator
+    #Pulse SSO Okta bypass property
+    PULSE.SSO.Testing.Override=YES
+    #User Role IDs
+    PULSE.roleIDs=External-Disputes-User$External-Disputes-User-Masked$External-Disputes-Viewer$External-Disputes-Viewer-Masked$Disputes-Pulse-User$BT-System-User$BT-System-User-Masked$
+    PULSE.roleIDs.Internal=BT-System-User$BT-System-User-Masked$Disputes-Pulse-User$
+    #User Role IDs to Role Mappings
+    External-Disputes-User=External-Disputes-User
+    External-Disputes-User-Masked=External-Disputes-User-Masked
+    External-Disputes-Viewer=External-Disputes-Viewer
+    External-Disputes-Viewer-Masked=External-Disputes-Viewer-Masked
+    Disputes-Pulse-User=Disputes-Pulse-User
+    BT-System-User=BT-System-User
+    BT-System-User-Masked=BT-System-User-Masked
+    #Default settings for user creation
+    ExtAuth.Profile=ExtUser
+    ExtAuth.CreateUser=Yes
+    ExtAuth.NewWindow=No
+
+    #Case Filtering by AcqIds
+    AuthorizationModel=com.lean.pulse.itemquery.PulseInternalAuthorizationModel
+
+    #Customized logo
+    logo.imageGraphic=images/LeanBankLogo.gif
+    logo.imageWidth=118
+    logo.imageHeight=80
+
+    #Primary System Parameters
+    HttpContext=http://201.168.1.165:8084
+    LCMSdb.Syntax=com.lean.core.query.syntax.OracleSyntax
+    LCMSdb.Driver=oracle.jdbc.OracleDriver
+    LCMSdb.URL=jdbc:oracle:thin:@201.168.1.165:1521/ORCLPDB
+    LCMSdb.Schema=ADJHUB
+    LCMSdb.Isolation=Default
+    AppName=*LeanDevPulse*
+    CoIDCust=Lean
+    DateFormat=MM/dd/yy HH:mm
+    CardholderSecurity=com.lean.pulse.security.PaymentCardSecurity
+    SimulatorActive=Yes
+    ## Note: SimulatorActive - If no or missing, it disables both fast forward AND Save Script buttons
+    Cache.Active=Yes
+    TransactionWarehouse=com.lean.pulse.transactionwarehouse.PulseTransactionWarehouse
+
+    # URL for simulator
+    LNBTransactions_URL=http://201.168.1.165:8084/testhub-lnb/transactions/transactions
+
+    #Secondary System Parameters
+    UseTiffForms=Yes
+    ResourceTreeFilters=YES
+    AuthorizationModelActive=No
+    CaseMgr.ArchiveTRNAvailable=No
+    ShowExternalUsers=Yes
+    CaseMgr.UndoAdjTranOnlyAfterCancel=No
+    CaseMgr.PreAuthSelectable=No
+    JobMgrOwnership=Exclusive
+    DisplayLocalFiles=No
+    #JobMgrOwnership values are 'Exclusive' for single servers or 'Mutex' for multi-servers (no quotes)
+    CaseMgr.ReportEventSingleItemQuery=Yes
+    CaseMgr.UseCaseQueueData=Yes
+    CaseMgr.AddCaseEventCount=No
+
+    AdjustmentMgr.DisableSkipAdjTran=true
+
+    #ExtendedComponents
+    AlwaysLoadTRNPreCommit=Yes
+
+    ##Quick Stream Data parameters
+    QuickStreamDataActive=Yes
+
+    ## Standard Pipeline Parameters
+    # Print to File
+    Cust_PL_PrintToFile_Folder=/AdjHubData/Data_Files/Print_To_File
+    #Outbound eMail
+    Cust_PL_OutboundEMail_SMTP_Server=smtp.emailsrvr.com
+    Cust_PL_OutboundEMail_SMTP_Port=25
+    Cust_PL_OutboundEMail_SMTP_User=test2@leanindustries.com
+    Cust_PL_OutboundEMail_SMTP_PW=Vakker05#@rose
+    Cust_PL_OutboundEMail_SMTP_From=test2@leanindustries.com
+    #Outbound Fax
+    Cust_PL_OutboundFax_SMTP_Server=
+    Cust_PL_OutboundFax_SMTP_Port=
+    Cust_PL_OutboundFax_SMTP_User=
+    Cust_PL_OutboundFax_SMTP_PW=
+    Cust_PL_OutboundFax_SMTP_From=
+    Cust_PL_OutboundFax_EmailAddrPrefix=
+    Cust_PL_OutboundFax_eMailAddrSuffix=@fax.customer.com
+
+    #Inbound Fax
+    Cust_PL_InboundFax_MailServer=secure.emailsrvr.com
+    Cust_PL_InboundFax_Port=993
+    Cust_PL_InboundFax_User=test2@leanindustries.com
+    Cust_PL_InboundFax_PW=Vakker05#@rose
+    #Inbound eMail - Images only
+    Cust_PL_InboundEMail_MailServer=secure.emailsrvr.com
+    Cust_PL_InboundEMail_Port=993
+    Cust_PL_InboundEMail_User=not_yet_configured@leanindustries.com
+    Cust_PL_InboundEMail_PW=
+    #SAFE
+    Cust_PL_OutboundSAFE=/AdjHubData/Data_Files/SAFE
+
+    ######
+    # Pulse Okta parameters
+    ######
+    PulseOKTA.TokenURI=http://201.168.1.165:8084/oktaServer/token
+    PulseOKTA.InternalRedirectURI=http://201.168.1.165:8084/oktaServer/dummyRedirect
+    PulseOKTA.ExternalRedirectURI=http://201.168.1.165:8084/oktaServer/dummyRedirect
+    PulseOKTA.UserInfoURI=http://201.168.1.165:8084/oktaServer/userinfo
+    #PulseOKTA.TrustStore=
+    #PulseOKTA.TrustStorePassword=
+    PulseOKTA.Version=1.0
+    PulseOKTA.GrantType=authorization_code
+    PulseOKTA.AppSecret=dummy-client-secret
+    PulseOKTA.AppID=adjhub-okta
+
+    ######
+    # Pulse PDS parameters
+    ######
+    PulsePDS.AppID=AppID
+    PulsePDS.AppSecret=AppSecret
+    PulsePDS.GrantType=GrantType
+    PulsePDS.SecurityScope=SecurityScope
+    PulsePDS.BaseURL=http://201.168.1.165:8084/pdsServer
+    PulsePDS.AuthenticationURL=http://201.168.1.165:8084/pdsServer/auth/OAuth/v2/token
+    PulsePDS.EncryptionURL=http://201.168.1.165:8084/pdsServer/encryption/key
+    PulsePDS.X_DFS_C_APP_CERT=RANDOM-G-APP-CERT
+    PulsePDS.X_DFS_API_PLAN=RANDOM-G-API-PLAN
+    #Key used by AdjHub to decrypt payloads from PDS
+    PulsePDS.PrivateKey=MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDUUkHUEsqHvwP7UVXhICmjKTwaLlrc8VaSCFYYkUZ8uHeLYQ3cMm3LJCOlG4Lv6KIpyrTaAeWEWqNxKc17jCyYbTcwVIbUXPC0kFLGMDFN1Cj1+t237ZpZgWC9d+x2kjV57SY2RwhHrqizrSjjwrvo+UNKESFox5T84Xkv9PRy7qahiG19r0PQHU9TL50M5b7QTsZ/4Edx3x5Ifk8JhZYJaXx6dLzHFsDTfV5KLfpFH8k9Ao3c697VYaIZ7Zj4J9bG4IfeTOpsFcx75P4Feh6C9w3MBs/OeQl7eyd7Ld8vwC86mCu+sOTbbs6ViWNJSw+t4uswSYpSH5qBM4mYme5hAgMBAAECggEBAMNbsGA+rgV7F2HNs9RBsK4FCd0ZG9fBY6NYckeGnDGz1aL0OTmLWQSaCwYnKzItfdAwSHlzV0iR0WMVUJFGJ95UV3xrued6YKvzQ4ZB34u6E7pJCmrq/6MtbOLIjlWHMBcwwoEcmJzEM0unn0D588ZoW6ax3mi3gvmvSL98htOb35rkYAy0KNnHuAyw5Zkk0X4Q6ysqoFfNhdjGjURgBaB0VELg00pzlX8h8wzB31BOQV1UQCI2EgDQ0H8arfwxg857tCBNiuCo2aSyRMwL/aSrlh1XR+rV5l2PvCmaMm1YFWZsR5AQ690Mk5c3UbHx4e/qZjKe5YrF7GY/GXz8S4UCgYEA75J330GX7DlKxT9gMhRHq1F9/RRqaStYb+8qEfQ2yF/JfbQtM5GPml9DZR1Iyj1KTh63DATOK0WDj6v+8wwizUe7ueYYmClFo1ODAWhQtLCncZ2T7eYIvqjyVWp8Z974j4bmy5GRfvR67tUNc3lggmsH998pA7UkuCV3TvFsQ2sCgYEA4uFrJdUQTQxT27fk2xHo3TbuZbIYgqvdFqo1y31+AN0tOzpK0jhDMd76hojgMdwOt+jX2CrmXLPEX5oiXnxUlA2Ckt2Q66mMR8B18128orX+TtTElV84eSrJaSkkCjuUmqS/DNI7Qr38uRCRtAGsefzv1lIpmyHpzNRQeoDGlGMCgYB2qIkO3yIsMkRCZh1zMHA+/mH0k8QQyxNGfaLMubTYkfjudetde18xCrYKwvJmmOzQvI3VOhwTep6q7nmcUAp8umbUsI7F7ss7FgXxEIXIuSZ2M6ItVp5GMM+2VsO/fsSF8j8l3Le/tb+dw5Ch/SA7+F89+h4KZBIH0ybAxvrkeQKBgBrI0/Z2beM6tle1IQ5/0cbz6jcVTHF4yrQXShyI5yxA8EsSuayRudUUZu0lEZqxSQeLNJgvkFyXWHKU5sPS18VWxviBsc8wiAAch5BAm7l11N0Hn2GnCSq802RX2AphOEz9cBSaaSaa+U/71cezfuIz6ziZIJJQ8aId2pZrx4XTAoGAT875pFMu+v/KYRT74cqpt2F0lZlu/vnM+O8107wckz93ALY8OxbZvGKofySm1fQzepwmzfL+Gl44NWfa1YUzpPzFS/EDdalLzqG6zGbUAAH1LEWiWL7oNDBuX3DEqclUhH2qNnLTKz0fAgx3O+fTPi8ctvuUB4LCDtUMqq0CXNQ=
+    #Key sent to PDS as a "responseKPI" header, will be used by PDS to encrypt payloads
+    PulsePDS.PublicKey=LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tDQpNSUlHTkRDQ0JSeWdBd0lCQWdJVEVnQUFHMk94MFA1MzcvL1dXUUFBQUFBYll6QU5CZ2txaGtpRzl3MEJBUXNGDQpBRENCZ2pFVE1CRUdDZ21TSm9tVDhpeGtBUmtXQTJOdmJURWhNQjhHQ2dtU0pvbVQ4aXhrQVJrV0VXUnBjMk52DQpkbVZ5Wm1sdVlXNWphV0ZzTVJJd0VBWUtDWkltaVpQeUxHUUJHUllDY0dZeEZ6QVZCZ29Ka2lhSmsvSXNaQUVaDQpGZ2R3Y205a1pHWnpNUnN3R1FZRFZRUURFeEpFUmxNZ1FsUWdTVk5USUVOQklDMGdSekl3SGhjTk1Ua3dPVEV6DQpNVFl4TURFMldoY05NakV3T1RFek1UWXlNREUyV2pDQjFURUxNQWtHQTFVRUJoTUNWVk14RVRBUEJnTlZCQWdUDQpDRWxzYkdsdWIybHpNUk13RVFZRFZRUUhFd3BTYVhabGNuZHZiMlJ6TVJrd0Z3WURWUVFLRXhCRVJsTWdVMlZ5DQpkbWxqWlhNZ1RFeERNUmt3RndZRFZRUUxFeEJRWVhsdFpXNTBJRk5sY25acFkyVnpNVFF3TWdZRFZRUURFeXNnDQpSVkJRZWtsVFUxVkZVakF5ZWtwWFJYcFRWRWN1WkdselkyOTJaWEptYVc1aGJtTnBZV3d1WTI5dE1USXdNQVlKDQpLb1pJaHZjTkFRa0JGaU5GVUZBdFUzbHpkR1Z0TFVScGMzQjFkR1Z6TFZGRlFHUnBjMk52ZG1WeUxtTnZiVENDDQpBU0l3RFFZSktvWklodmNOQVFFQkJRQURnZ0VQQURDQ0FRb0NnZ0VCQU5SU1FkUVN5b2UvQS90UlZlRWdLYU1wDQpQQm91V3R6eFZwSUlWaGlSUm55NGQ0dGhEZHd5YmNza0k2VWJndS9vb2luS3ROb0I1WVJhbzNFcHpYdU1MSmh0DQpOekJVaHRSYzhMU1FVc1l3TVUzVUtQWDYzYmZ0bWxtQllMMTM3SGFTTlhudEpqWkhDRWV1cUxPdEtPUEN1K2o1DQpRMG9SSVdqSGxQemhlUy8wOUhMdXBxR0liWDJ2UTlBZFQxTXZuUXpsdnRCT3huL2dSM0hmSGtoK1R3bUZsZ2xwDQpmSHAwdk1jV3dOTjlYa290K2tVZnlUMENqZHpyM3RWaG9obnRtUGduMXNiZ2g5NU02bXdWekh2ay9nVjZIb0wzDQpEY3dHejg1NUNYdDdKM3N0M3kvQUx6cVlLNzZ3NU50dXpwV0pZMGxMRDYzaTZ6QkppbElmbW9FemlaaVo3bUVDDQpBd0VBQWFPQ0Frd3dnZ0pJTURVR0ExVWRFUVF1TUN5Q0trVlFVSHBKVTFOVlJWSXdNbnBLVjBWNlUxUkhMbVJwDQpjMk52ZG1WeVptbHVZVzVqYVdGc0xtTnZiVEFkQmdOVkhRNEVGZ1FVRGpaZTF5c1NsMm90Q2YzbDYyMjBDZUFJDQpzYWt3SHdZRFZSMGpCQmd3Rm9BVU9tcGxnc3psSk53Yis5Tnk0YWc2NHJrUUo3TXdWZ1lEVlIwZkJFOHdUVEJMDQpvRW1nUjRaRmFIUjBjRG92TDJOeWJDNWthWE5qYjNabGNtWnBibUZ1WTJsaGJDNWpiMjB2WTNKc0wwUkdVeVV5DQpNRUpVSlRJd1NWTlRKVEl3UTBFbE1qQXRKVEl3UnpJdVkzSnNNSUlCWndZSUt3WUJCUVVIQVFFRWdnRlpNSUlCDQpWVENCeXdZSUt3WUJCUVVITUFLR2diNXNaR0Z3T2k4dkwwTk9QVVJHVXlVeU1FSlVKVEl3U1ZOVEpUSXdRMEVsDQpNakF0SlRJd1J6SXNRMDQ5UVVsQkxFTk9QVkIxWW14cFl5VXlNRXRsZVNVeU1GTmxjblpwWTJWekxFTk9QVk5sDQpjblpwWTJWekxFTk9QVU52Ym1acFozVnlZWFJwYjI0c1JFTTljR1lzUkVNOVpHbHpZMjkyWlhKbWFXNWhibU5wDQpZV3dzUkVNOVkyOXRQMk5CUTJWeWRHbG1hV05oZEdVL1ltRnpaVDl2WW1wbFkzUkRiR0Z6Y3oxalpYSjBhV1pwDQpZMkYwYVc5dVFYVjBhRzl5YVhSNU1GRUdDQ3NHQVFVRkJ6QUNoa1ZvZEhSd09pOHZZM0pzTG1ScGMyTnZkbVZ5DQpabWx1WVc1amFXRnNMbU52YlM5amNtd3ZSRVpUSlRJd1FsUWxNakJKVTFNbE1qQkRRU1V5TUMwbE1qQkhNaTVqDQpjblF3TWdZSUt3WUJCUVVITUFHR0ptaDBkSEE2THk5dlkzTndMbVJwYzJOdmRtVnlabWx1WVc1amFXRnNMbU52DQpiUzl2WTNOd01Bd0dBMVVkRXdFQi93UUNNQUF3RFFZSktvWklodmNOQVFFTEJRQURnZ0VCQUVrdDUwdjUzOEE3DQpHTHVhTDJMNDd1WTQ4eXUvS1gwb2JXUXlhWlpPb0pNOHQxUUt2NGVmYk1hWSt6UkY1OXN4aUVXSXJuQUNGQXA3DQpUN1crblVaZU1RemJTM3gwanZ4eHV0RHplVWhRU1B1Y1dHN2JUVzA0R2ZoUWFEOHdjTkZTS1c4dzZCb0xMNUZKDQpiaTg1Q25kbDNrT2Nyb3Q2WkRmQmNwMWw5TjdrK1dLRVZJaHpvc2Zjd2J6NkJYT2gvcDVPMytYM1crWVkvbktkDQp5ZlRzSUNZeGtBRFZBdEZzZUNSN2JvbklTOHR6T28vMi92MmxDQ3U1bjdxMmVXdzkvOUgveU9jWnM0TzhISlY5DQpici9sUzVPTnNkTXR1WHJGWjF2cVhSVGJDMnR6bUwvUFVkZkJ4ZnhCT2ZCM3JQcHNRd2FMZldKQkU1S0dkK3lJDQozV2loUHB0c3oxbz0NCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0NCg==
+    #KeyID of the public key above to be send as an "encryptionKeyID" header
+    PulsePDS.PublicKeyID=ISSUER02
+
+    PDS.ErrorRetryFrequency=2|4|6
+    PulsePDS.retry.timer=1|2
+
+    ####
+    # Pulse Documentum Properties
+    ####
+    Pulse.Documentum.Username=DocUserName
+    Pulse.Documentum.Password=DocPassword
+    Pulse.Documentum.URL=http://201.168.1.165:8084/PulseDocumentumServer/DocumentumService
+    Pulse.Documentum.RacfID=DocRacfID
+    Pulse.Documentum.RacfPassword=DocRacfPassword
+    Pulse.Documentum.RacfCentreCode=Dev
+
+
+    ###
+    # Internal use only!!!
+    ###
+    PulsePDS.OBOMap=1111$2222$3333
+
+    ##Bin Import job##
+    Pulse.BIN.SOURCE=/AdjHubData/Data_Files/BIN_JOB/srcBinFiles
+    Pulse.BIN.DESTINATION=/AdjHubData/Data_Files/BIN_JOB/destBinFiles
+    Pulse.BIN.EXCEPTION=/AdjHubData/Data_Files/BIN_JOB/exBinFiles
+    ##DMAP Import job##
+    Pulse.DMAP.SOURCE=/AdjHubData/Data_Files/DMAP_JOB/srcBinFiles
+    Pulse.DMAP.DESTINATION=/AdjHubData/Data_Files/DMAP_JOB/destBinFiles
+    Pulse.DMAP.EXCEPTION=/AdjHubData/Data_Files/DMAP_JOB/exBinFiles
+
+    ###
+    # Internal Lean use only!!!
+    ###
+    Pulse.SkipTranFiltering=true
+    Pulse.SkipLuhnCheck=true
+
+    ####Rest config####
+    JacksonMapper.FailUnkownFields=true
+
+    ######
+    # Pulse Virus Scan
+    ######
+    Pulse.VirusScan.URL=http://201.168.1.165:8084/PulseVirusScanServer/VirusScanService
+    Pulse.VirusScan.Username=VirusScanUser
+    Pulse.VirusScan.Password=VirusScanPass
+    Pulse.VirusScan.Racf=abc
+    Pulse.VirusScan.CenterCode=DoeRayMe
+    Pulse.VirusScan.AppName=AdjHub
+
+    ##Customer-Specific Parameters
+    #To be added here as applicable.
+    Tiff_Resolution=200
+    DocMgr.EnableColorSupportForLetterText=Yes
+
+    #For NewUI BackOffice
+    PreviewBackOffice=Yes
+    Questionnaire.AutoGenerateSingleEdits=Yes
+    FormAddable=true
+
+    ##################################################################################################################
+    ## NetworkHub Parameters                                                                                        ##
+    ##################################################################################################################
+    NetworkHubHome=/AHServerConfig
+
+    ## Flag to control the creation of ERR records for non-recognized incoming adjustments
+    NetworkHubFilterUnknownAdj=false
+
+    ## Environment - used to control which profile record is used at runtime to control Visa Plugin properties, most notably Visa polling parameters
+    NetworkServicesEnvironment=
+
+    NetworkServices.SkipCaseItemMatching=True
+
+    # Specific network properties
+    NSNetwork.Visa.AutoAcknowledgePurchaseDetails=true
+    NSNetwork.Visa.PollerDocumentVisibility=ALL
+
+    ## Visa network
+    Network1.Name=Visa
+    Network1.NetworkID=Visa
+    Network1.ExtendedCaseTranTableName=NS_CaseTran
+    Network1.TransactionManager=com.lean.networkservices.NetworkServicesTransactionManager
+    Network1.CanvasFactory=com.lean.networkservices.NetworkServicesCanvasFactory
+
+    ## MCOM network
+    Network2.Name=MCOM
+    Network2.NetworkID=MCOM
+    Network2.ExtendedCaseTranTableName=NS_CaseTran
+    Network2.TransactionManager=com.lean.pulse.transactionwarehouse.PulseTransactionManager
+    Network2.CanvasFactory=com.lean.networkservices.NetworkServicesCanvasFactory
+
+    ######
+    # Logging Parameters
+    ######
+    PurgeLogFilesDays=30
+    property.LogPath=/AdjHubData/Logs
+    LogPath=/AdjHubData/Logs
+    logService.className=com.lean.logservice.LogServiceLog4jV2
+    #### Log4j2 properties ####
+    #Console Appender
+    appender.console.name=STDOUT
+    appender.console.type=Console
+    appender.console.layout.type=PatternLayout
+    appender.console.layout.pattern=%d{yyyyMMdd HHmmss.SSS} %-5p [%-8.8t] %-15.15c{1} %3x %m%n
+    #File Appender
+    appender.rolling.name = LOGFILE
+    appender.rolling.type = RollingFile
+    appender.rolling.fileName = ${LogPath}/AdjHub.log
+    appender.rolling.filePattern = ${LogPath}/AdjHub.%d{yyyy-MM-dd-HH}.log
+    appender.rolling.layout.type = PatternLayout
+    appender.rolling.layout.pattern = %d{yyyyMMdd HHmmss.SSS} %-5p [%-8.8t] %-15.15c{1} %3x %m%n
+    appender.rolling.policies.type = Policies
+    appender.rolling.policies.time.type = TimeBasedTriggeringPolicy
+    appender.rolling.policies.time.interval = 1
+    appender.rolling.policies.time.modulate = true
+
+    #Loggers
+    loggers=lean,ipm,sbokwop,axis,jsp,exp,lpres,REST
+    rootLogger.level=DEBUG
+    rootLogger.appenderRefs = file
+    rootLogger.appenderRef.file.ref = LOGFILE
+
+    logger.lean.name=com.lean
+    logger.lean.level=DEBUG
+    logger.lean.appenderRefs=file
+    logger.lean.appenderRef.file.ref=LOGFILE
+    logger.lean.additivity = false
+
+    logger.ipm.name=com.lean.ipm
+    logger.ipm.level=ERROR
+    logger.ipm.appenderRefs=file
+    logger.ipm.appenderRef.file.ref=LOGFILE
+    logger.ipm.additivity = false
+
+    logger.sbokwop.name=com.sbokwop
+    logger.sbokwop.level=ERROR
+    logger.sbokwop.appenderRefs=file
+    logger.sbokwop.appenderRef.file.ref=LOGFILE
+    logger.sbokwop.additivity = false
+
+    logger.axis.name=org.apache.axis.client.Call
+    logger.axis.level=ERROR
+    logger.axis.appenderRefs=file
+    logger.axis.appenderRef.file.ref=LOGFILE
+    logger.axis.additivity = false
+
+    logger.jsp.name=org.apache.jsp
+    logger.jsp.level=ERROR
+    logger.jsp.appenderRefs=file
+    logger.jsp.appenderRef.file.ref=LOGFILE
+    logger.jsp.additivity = false
+
+    logger.exp.name=Explorer
+    logger.exp.level=ERROR
+    logger.exp.appenderRefs=file
+    logger.exp.appenderRef.file.ref=LOGFILE
+    logger.exp.additivity = false
+
+    logger.lpres.name=lpres
+    logger.lpres.level=ERROR
+    logger.lpres.appenderRefs=file
+    logger.lpres.appenderRef.file.ref=LOGFILE
+    logger.lpres.additivity = false
+
+    logger.REST.name=REST
+    logger.REST.level=DEBUG
+    logger.REST.appenderRefs=file
+    logger.REST.appenderRef.file.ref=LOGFILE
+    logger.REST.additivity = false
+
+    #*******************************************************************************************************
+    #*******************************************************************************************************
+    #*******************************************************************************************************
+    #*******************************************************************************************************
+    #Lean Lab use ONLY below this point - Remove for Customer copies of AdjHub
+    Config.passive.root=/AdjHubData/ConfigSource
+    Config.passive.xmlDefinition=/AHServerConfig/ConfigSource.xml
+    Config.support.root=/AdjHubData/ConfigSupport
+    DisplayAdvancedErrors=True
+    FormTemplatePreview.BookmarkMap=\\\\leanserver\\visiomoduleshare\\FormTemplatePreviewData.yml
+
+    #For Bamboo - Run the SQL Script
+    DatabaseSchema.ApplySQLLeanDev=Yes
+
+    #Demo
+    FraudConfirmationURL=http://demo.leanindustries.com/FraudConfirmation
+
+    ##Customer-Specific Parameters
+    MNT_CompanyID=96
+    MNT_FrontEndEntryPoint_URL=http://201.168.1.165:8084/?External=Yes
+    # MNT_FrontEndEndEntryPoint is for the portal redirect URL
+    MNT_FrontEndEntryPoint_ExpiryWindowSize=60000
+    MGL_Outbound_Folder=//201.168.1.165/AdjHubData/Data_Files/MnT_GL_CSV
+    MGL_Outbound_Folder_Temp=//201.168.1.165/AdjHubData/Data_Files/MnT_GL_CSV_temp
+
+    MNT_HoganRequestingApp=DMA
+    MNT_HoganUserName=test
+    MNT_HoganPassword=abc123
+    MNT_HoganUserNameHttp=testHttp
+    MNT_HoganPasswordHttp=abc123Http
+    MNT_HoganRegion=Test
+    MNT_HoganTransactionHistory_URL=http://201.168.1.165:8084/MntDDAServicesServer/services/WSUnfilteredTranHistory
+    MNT_HoganCustomerAccounts_URL=http://201.168.1.165:8084/MntDDAServicesServer/services/WSCustomerToAccount
+    MNT_HoganAccountProfile_URL=http://201.168.1.165:8084/MntDDAServicesServer/services/intfwsAccountProfileEndpoint0
+    MNT_HoganAthService_URL=http://201.168.1.165:8084/MntDDAServicesServer/services/WSAthTranDetails
+    MNT_HoganPartialFeeReversal_URL=http://201.168.1.165:8084/MntDDAServicesServer/services/intfwsPartialFeeReversalEndpoint7
+    MNT_HoganCustomerProfile_URL=http://201.168.1.165:8084/MNTSimulator/services/WSCustomerProfile
+    MNT_HoganConnectionTimeout=120000
+    MNT_HoganAlertThreshold=60000
+
+  tagasversion.properties: |-
+    tagasversion.properties=1.6
+
+  NHClient.Genti.properties: |-
+    #
+    # NHClient.Genti properties
+    #
+    # List the networks and associated properties that the Genti client has access to.
+    #
+    PropertyVersion=1.1
+
+    #
+    # Networks
+    #
+
+    #Visa
+    Visa.NetworkID=Visa
+    Visa.ClientRole=Iss
+    Visa.UserType=loginId
+    Visa.UserID=abc123
+    Visa.Username=abc123
+    Visa.Password=xyz321
+    #Properties below are used by networkHub to call visaSimulator over Soap.
+    #Visa.SIURL=http://201.168.1.165:8084/VisaRTSIServer212/RTSIServiceSI
+    #Visa.TIURL=http://201.168.1.165:8084/VisaRTSIServer212/RTSIServiceTI
+    Visa.SIURL=http://201.168.1.165:8084/VisaRTSIServer212/RTSIServiceSI
+    Visa.TIURL=http://201.168.1.165:8084/VisaRTSIServer212/RTSIServiceTI
+    Visa.Timeout=120000
+    Visa.AlertThreshold=45000
+    Visa.AlertNoFloodTime=300000
+    Visa.NumPorts=2
+    Visa.IncludeAdjustmentsInTransactionSearch=false
+    Visa.EnableHandlers=false
+    Visa.ForcePostOperations=true

@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: adj-hub-service
+spec:
+  type: NodePort
+  selector:
+    app: adj-hub-pod
+  ports:
+    - name: adj-hub-port
+      protocol: TCP
+      # port exposed outside kubernetes cluster.(out of cluster communication)
+      nodePort: 30777
+      # port exposed by the service inside the cluster (in cluster communication).
+      port: 8081
+      # port on which your application is running inside the container.
+      targetPort: 8080
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adj-hub-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: adj-hub-pod
+  template:
+    metadata:
+      labels:
+        app: adj-hub-pod
+    spec:
+      containers:
+        - name: adj-hub-container
+          image: lean-images/adjhub-pulse:v4.2.141
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+          - name: ADJHUB_PROPERTY_FILE
+            value: "/AHServerConfig/AdjHub.properties"
+          - name: CATALINA_OPTS
+            value: -server -Xms256m -Xmx1024m -XX:PermSize=512m -XX:MaxPermSize=512m -Dadjhub.https.pass=${adjhub_https_pass} -Dadjhub.https.alias=${adjhub_https_alias}
+          - name: adjhub_https_alias
+            valueFrom:
+              secretKeyRef:
+                name: adj-hub-https-cert
+                key: adjhub_https_alias
+          - name: adjhub_https_pass
+            valueFrom:
+              secretKeyRef:
+                name: adj-hub-https-cert
+                key: adjhub_https_pass
+          volumeMounts:
+            - mountPath: /AHServerConfig
+              name: ahs-config-dir
+            - mountPath: /AdjHubData
+              readOnly: false
+              name: cache-volume
+      #Local volume on cluster node
+      volumes:
+        - name: ahs-config-dir
+          configMap:
+            name: ahs-config
+        - name: cache-volume
+          emptyDir: { }
